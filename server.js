@@ -14,7 +14,7 @@ const provider = new ethers.providers.JsonRpcProvider(
   "https://testnet.aurora.dev"
 );
 const userContract = new ethers.Contract(
-  "0xbE86e3f884e059328F576EfBdbFB4A8d96eff94F",
+  "0x1b29d900ca672E04C539e6b3Ad6A596d37F59415",
   userAbi,
   provider
 );
