@@ -8,13 +8,13 @@ const ethUtil = require("ethereumjs-util");
 const userAbi = require("./ABIs/user.json");
 const { randomBytes } = require("crypto");
 
-const sessionExpirationDelayInSeconds = 1000;
+const sessionExpirationDelayInSeconds = 2628288;
 
 const provider = new ethers.providers.JsonRpcProvider(
   "https://testnet.aurora.dev"
 );
 const userContract = new ethers.Contract(
-  "0xcfd48641c00Afd58fc068644Cfab09a4B3E65c23",
+  "0xbE86e3f884e059328F576EfBdbFB4A8d96eff94F",
   userAbi,
   provider
 );
