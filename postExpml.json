@@ -1,0 +1,25 @@
+{
+  "userAddress": "0x3584e62d8d032583a8ac0981dfe812c49db5f939",
+  "signature": "0x5bdc9ccd742d63fa2cefdb40cadfe8ad76487da4ed26731695f3cf280bd739eb3ee3d4fb31ce6fd43b9d3ef470568d6fa9cf5fb1da5f47cd9e710bca7e4fb0c01b",
+  "timestamp": 1672637389,
+  "data": [
+    "ahmed",
+    "middlename",
+    "dalhoum",
+    "ahmed dalhoum556",
+    "white",
+    "discord_link",
+    "instagram_link",
+    "twitter_link",
+    "tiktok_link",
+    "picture_upload",
+    "email55",
+    "bio",
+    "2626698585"
+  ],
+  "dateOfBirth": 2222222,
+  "pronoun": 1,
+  "tags": ["tag1"],
+  "fields": [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13],
+  "ownedNFT": ["0x0000000000000000000000000000000000000000", 0]
+}
