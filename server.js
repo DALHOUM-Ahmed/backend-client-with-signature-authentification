@@ -18,6 +18,7 @@ const bscProvider = new ethers.providers.JsonRpcProvider(
 );
 
 const sessionExpirationDelayInSeconds = 2628288;
+const signatureLifeTimeInSeconds = 3600; //one hour
 
 const userContractAddress = "0x16e2Bc10b42a9B03DA8b5E0476333d2874dA8d9e";
 const groupContractAddress = "0x5FFd8a50A87B5B1a6429819C1eDFcC6F23D2E958";
@@ -1511,7 +1512,10 @@ app.post("/signup", async (req, res) => {
         res.json(token);
       } else {
         try {
-          if (getTimestampInSeconds() - req.body.timestamp <= 3600) {
+          if (
+            getTimestampInSeconds() - req.body.timestamp <=
+            signatureLifeTimeInSeconds
+          ) {
             const msgHex = ethUtil.bufferToHex(
               Buffer.from("securetransfer" + req.body.timestamp)
             );
@@ -1602,7 +1606,10 @@ app.post("/signin", async (req, res) => {
     res.json(token);
   } else {
     try {
-      if (getTimestampInSeconds() - req.body.timestamp <= 10) {
+      if (
+        getTimestampInSeconds() - req.body.timestamp <=
+        signatureLifeTimeInSeconds
+      ) {
         const msgHex = ethUtil.bufferToHex(
           Buffer.from("securetransfer" + req.body.timestamp)
         );
