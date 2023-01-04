@@ -20,7 +20,7 @@ const bscProvider = new ethers.providers.JsonRpcProvider(
 const sessionExpirationDelayInSeconds = 2628288;
 const signatureLifeTimeInSeconds = 3600; //one hour
 
-const userContractAddress = "0x16e2Bc10b42a9B03DA8b5E0476333d2874dA8d9e";
+const userContractAddress = "0x14C315c29371c4C8206Af7cdC6f9CeF891e39A48";
 const groupContractAddress = "0x5FFd8a50A87B5B1a6429819C1eDFcC6F23D2E958";
 const postContractAddress = "0x26E60aA320e93F6CE092D6c242697d8876129BAb";
 const ethThresholdToPostInEthGroup = 0.1;
@@ -84,7 +84,7 @@ async function verifySigninAfterExpirationCheck(token) {
   return signedAddress.toLowerCase() == token.userAddress.toLowerCase();
 }
 
-app.post("/post_update_tags", async (req, res) => {
+app.post("/post-update-tags", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -143,7 +143,7 @@ app.post("/post_update_tags", async (req, res) => {
   }
 });
 
-app.post("/post_update_title", async (req, res) => {
+app.post("/post-update-title", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -202,7 +202,7 @@ app.post("/post_update_title", async (req, res) => {
   }
 });
 
-app.post("/post_update_body", async (req, res) => {
+app.post("/post-update-body", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -263,7 +263,7 @@ app.post("/post_update_body", async (req, res) => {
 
 //"please verify if you are authorized to change this, please report the problem if you are sure (you are the post author, group admin)"
 
-app.post("/post_create", async (req, res) => {
+app.post("/post-create", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -327,7 +327,7 @@ app.post("/post_create", async (req, res) => {
   }
 });
 
-app.post("/post_bsc_group", async (req, res) => {
+app.post("/post-bsc-group", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -387,7 +387,7 @@ app.post("/post_bsc_group", async (req, res) => {
   }
 });
 
-app.post("/post_ethereum_group", async (req, res) => {
+app.post("/post-ethereum-group", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -447,57 +447,57 @@ app.post("/post_ethereum_group", async (req, res) => {
   }
 });
 
-app.post("/group_update_about", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("token", token);
-        // console.log("new session hash", token.OrigingeneratedBytes);
-        //////////////////////////////////signup
+// app.post("/group_update_about", async (req, res) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   try {
+//     var token = { success: false, signinTime: req.body.signinTime };
+//     if (
+//       getTimestampInSeconds() - req.body.signinTime >=
+//       sessionExpirationDelayInSeconds
+//     ) {
+//       token.reason = "session expired";
+//       res.json(token);
+//     } else {
+//       const isCorrect = await verifySigninAfterExpirationCheck(req.body);
+//       console.log("isCorrect", isCorrect);
+//       if (isCorrect) {
+//         ////Operation code
+//         const sessionHash =
+//           "0x" +
+//           keccak256(req.body.generatedBytes, req.body.signinTime).toString(
+//             "hex"
+//           );
+//         console.log("old session hash", sessionHash);
+//         token.generatedBytes = getRandom32Bytes();
+//         const nextSessionHash =
+//           "0x" +
+//           keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
+//         console.log("token", token);
+//         // console.log("new session hash", token.OrigingeneratedBytes);
+//         //////////////////////////////////signup
 
-        await groupContract
-          .connect(serverWallet)
-          .updateGroupAbout(
-            req.body.userAddress,
-            req.body.groupId,
-            req.body.about,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
+//         await groupContract
+//           .connect(serverWallet)
+//           .updateGroupAbout(
+//             req.body.userAddress,
+//             req.body.groupId,
+//             req.body.about,
+//             sessionHash,
+//             nextSessionHash
+//           );
+//         //////
+//         token.success = true;
+//       } else {
+//         token.reason = "non verified or expired token";
+//       }
+//       res.json(token);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
 
-app.post("/group_update_name", async (req, res) => {
+app.post("/group-update-name", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   try {
     var token = { success: false, signinTime: req.body.signinTime };
@@ -547,10 +547,68 @@ app.post("/group_update_name", async (req, res) => {
   }
 });
 
-app.post("/group_create", async (req, res) => {
+app.post("/group-update", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
+  console.log("execution test");
+
   try {
     var token = { success: false, signinTime: req.body.signinTime };
+    if (
+      getTimestampInSeconds() - req.body.signinTime >=
+      sessionExpirationDelayInSeconds
+    ) {
+      token.reason = "session expired";
+      res.json(token);
+    } else {
+      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
+      console.log("isCorrect", isCorrect);
+      if (isCorrect) {
+        ////Operation code
+        const sessionHash =
+          "0x" +
+          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
+            "hex"
+          );
+        console.log("old session hash", sessionHash);
+        token.generatedBytes = getRandom32Bytes();
+        const nextSessionHash =
+          "0x" +
+          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
+        console.log("token", token);
+        // console.log("new session hash", token.OrigingeneratedBytes);
+        //////////////////////////////////signup
+
+        await groupContract
+          .connect(serverWallet)
+          .updateGroupName(
+            req.body.userAddress,
+            req.body.groupId,
+            req.body.name,
+            sessionHash,
+            nextSessionHash
+          );
+        //////
+        token.success = true;
+      } else {
+        token.reason = "non verified or expired token";
+      }
+      res.json(token);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/group-create", async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  var token = { success: false, signinTime: req.body.signinTime };
+  const groupId = await groupContract.groupIdByName(req.body.name);
+  if (groupId.eq(0)) {
+    token.reason = "Group with same name already exists";
+    res.json(token);
+    return;
+  }
+  try {
     if (
       getTimestampInSeconds() - req.body.signinTime >=
       sessionExpirationDelayInSeconds
@@ -627,16 +685,10 @@ app.post("/check-signin", async (req, res) => {
   }
 });
 
-app.post("/update-username", async (req, res) => {
+app.post("/update-user", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
-  var id = await userContract.idByUserName(req.body.username);
-  var token = { success: false, signinTime: req.body.signinTime };
-  console.log("corresponding id", id);
-  if (id.gt(0)) {
-    token.reason = "existing username";
-    console.log("existing username");
-  }
   try {
+    var token = { success: false, signinTime: req.body.signinTime };
     if (
       getTimestampInSeconds() - req.body.signinTime >=
       sessionExpirationDelayInSeconds
@@ -660,812 +712,106 @@ app.post("/update-username", async (req, res) => {
           keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
         console.log("new session hash", token.generatedBytes);
         //////////////////////////////////signup
-        if (!token.reason) {
-          await userContract
-            .connect(serverWallet)
-            .setUserNameOwner(
-              req.body.userAddress,
-              req.body.username,
-              sessionHash,
-              nextSessionHash
-            );
-          //////
-          token.success = true;
+        var updates = {
+          userAddress: req.body.userAddress,
+          data: [],
+          dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : 0,
+          pronoun: req.body.pronoun ? req.body.pronoun : 0,
+          tags: req.body.tags ? req.body.tags : [],
+          fields: [],
+          ownedNFT: req.body.ownedNFT
+            ? req.body.ownedNFT
+            : ["0x0000000000000000000000000000000000000000", 0],
+        };
+        if (req.body.firstname) {
+          updates.data.push(req.body.firstname);
+          updates.fields.push(0);
         }
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
+        if (req.body.middlename) {
+          updates.data.push(req.body.middlename);
+          updates.fields.push(1);
+        }
+        if (req.body.lastname) {
+          updates.data.push(req.body.lastname);
+          updates.fields.push(2);
+        }
+        if (req.body.username) {
+          updates.data.push(req.body.username);
+          updates.fields.push(3);
+        }
+        if (req.body.backgroundColor) {
+          updates.data.push(req.body.backgroundColor);
+          updates.fields.push(4);
+        }
+        if (req.body.discord) {
+          updates.data.push(req.body.discord);
+          updates.fields.push(5);
+        }
+        if (req.body.instagram) {
+          updates.data.push(req.body.instagram);
+          updates.fields.push(6);
+        }
+        if (req.body.twitter) {
+          updates.data.push(req.body.twitter);
+          updates.fields.push(7);
+        }
+        if (req.body.tiktok) {
+          updates.data.push(req.body.tiktok);
+          updates.fields.push(8);
+        }
+        if (req.body.uploadedPictureUrl) {
+          updates.data.push(req.body.uploadedPictureUrl);
+          updates.fields.push(9);
+        }
+        if (req.body.email) {
+          updates.data.push(req.body.email);
+          updates.fields.push(10);
+        }
+        if (req.body.bio) {
+          updates.data.push(req.body.bio);
+          updates.fields.push(11);
+        }
+        if (req.body.telephone) {
+          updates.data.push(req.body.telephone);
+          updates.fields.push(12);
+        }
+        if (req.body.govid) {
+          updates.data.push(req.body.govid);
+          updates.fields.push(13);
+        }
+        if (req.body.fingerscan) {
+          updates.data.push(req.body.fingerscan);
+          updates.fields.push(14);
+        }
+        if (req.body.tags) {
+          updates.tags = req.body.tags;
+          updates.fields.push(15);
+        }
+        if (req.body.ownedNFT) {
+          updates.ownedNFT = req.body.ownedNFT;
+          updates.fields.push(16);
+        }
+        if (req.body.dateOfBirth) {
+          updates.dateOfBirth = req.body.dateOfBirth;
+          updates.fields.push(17);
+        }
+        if (req.body.pronoun) {
+          updates.pronoun = req.body.pronoun;
+          updates.fields.push(18);
+        }
 
-app.post("/update-firstname", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
+        console.log("updates", updates);
+
         await userContract
           .connect(serverWallet)
-          .setFirstNameOwner(
-            req.body.userAddress,
-            req.body.firstname,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-middlename", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setMiddleNameOwner(
-            req.body.userAddress,
-            req.body.middlename,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-backgroundcolor", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setBackgroundColorOwner(
-            req.body.userAddress,
-            req.body.backgroundColor,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-dateofbirth", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setDateOfBirthOwner(
-            req.body.userAddress,
-            req.body.dateOfBirth,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-instagram", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setInstagramOwner(
-            req.body.userAddress,
-            req.body.instagram,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-tiktok", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setTiktokOwner(
-            req.body.userAddress,
-            req.body.tiktok,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-twitter", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setTwitterOwner(
-            req.body.userAddress,
-            req.body.twitter,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-lastname", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setLastNameOwner(
-            req.body.userAddress,
-            req.body.lastname,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-email", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setEmailOwner(
-            req.body.userAddress,
-            req.body.email,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-tags", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setTagsOwner(
-            req.body.userAddress,
-            req.body.tags,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-nft", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setPictureNFTOwner(
-            req.body.userAddress,
-            req.body.nft,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-uploadedpicture", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setPictureUploadOwner(
-            req.body.userAddress,
-            req.body.pictureupload,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-phonenumber", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setTelephoneOwner(
-            req.body.userAddress,
-            req.body.phonenumber,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-govid", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setGovtIDOwner(
-            req.body.userAddress,
-            req.body.govid,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-fingerscan", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setFingerScanOwner(
-            req.body.userAddress,
-            req.body.fingerscan,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-phoneverifieddata", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setTelephoneVerifiedDataOwner(
-            req.body.userAddress,
-            req.body.phoneverifieddata,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/update-emailverifieddata", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("new session hash", token.generatedBytes);
-        //////////////////////////////////signup
-        await userContract
-          .connect(serverWallet)
-          .setEmailVerifiedDataOwner(
-            req.body.userAddress,
-            req.body.emailverifieddata,
+          .updateBatch(
+            updates.userAddress,
+            updates.data,
+            updates.dateOfBirth,
+            updates.pronoun,
+            updates.tags,
+            updates.fields,
+            updates.ownedNFT,
             sessionHash,
             nextSessionHash
           );
@@ -1483,32 +829,27 @@ app.post("/update-emailverifieddata", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
-  var id = await userContract.idByUserName(
-    req.body.data[req.body.fields.findIndex((e) => e == 3)]
-  );
-  console.log("corresponding id", id);
+
   var token = { success: false };
-  if (id.gt(0)) {
-    token.reason = "existing username and/or account address and/or email";
-    console.log("existing username");
+  if (!req.body.username || !req.body.userAddress) {
+    console.log("username", req.body.username);
+    console.log("userAddress", req.body.userAddress);
+    console.log("req.body", req.body);
+    token.reason = "missing necessary fields";
     res.json(token);
   } else {
-    id = await userContract.idByAddress(req.body.userAddress);
+    var id = await userContract.idByUserName(req.body.username);
+    console.log("corresponding id", id);
+
     if (id.gt(0)) {
-      token.reason = "existing address and/or email";
-      console.log("address already used");
+      token.reason = "existing username and/or account address";
+      console.log("existing username");
       res.json(token);
     } else {
-      id = await userContract.idByEmail(
-        req.body.data[req.body.fields.findIndex((e) => e == 11)]
-      );
-      console.log(
-        "email",
-        req.body.data[req.body.fields.findIndex((e) => e == 11)]
-      );
+      id = await userContract.idByAddress(req.body.userAddress);
       if (id.gt(0)) {
-        token.reason = "existing email";
-        console.log("email already used");
+        token.reason = "existing address";
+        console.log("address already used");
         res.json(token);
       } else {
         try {
@@ -1542,40 +883,122 @@ app.post("/signup", async (req, res) => {
               addr.toLowerCase() === req.body.userAddress.toLowerCase()
             );
             if (addr.toLowerCase() === req.body.userAddress.toLowerCase()) {
-              var userExists = await userContract.idByAddress(addr);
-              userExists = userExists > 0;
-              // console.log("signature hash", keccak256(req.body.signature).toString());
-              if (!userExists) {
-                const randomBytes = getRandom32Bytes();
-                token.generatedBytes = randomBytes;
-                token.signinTime = req.body.timestamp;
+              const randomBytes = getRandom32Bytes();
+              token.generatedBytes = randomBytes;
+              token.signinTime = req.body.timestamp;
 
-                const sessionHash =
-                  "0x" +
-                  keccak256(token.generatedBytes, token.signinTime).toString(
-                    "hex"
-                  );
-                console.log("session hash", sessionHash);
-                //////////////////////////////////signup
-                await userContract
-                  .connect(serverWallet)
-                  .signupOwner(
-                    sessionHash,
-                    addr,
-                    req.body.data,
-                    req.body.dateOfBirth,
-                    req.body.pronoun,
-                    req.body.tags,
-                    req.body.fields,
-                    req.body.ownedNFT
-                  );
-                token.success = true;
-                res.json(token);
-              } else {
-                token.reason = "User already exists";
-                console.log("User already exists");
-                res.json(token);
+              const sessionHash =
+                "0x" +
+                keccak256(token.generatedBytes, token.signinTime).toString(
+                  "hex"
+                );
+              console.log("session hash", sessionHash);
+              //////////////////////////////////signup
+
+              var updates = {
+                userAddress: req.body.userAddress,
+                data: [],
+                dateOfBirth: req.body.dateOfBirth ? req.body.dateOfBirth : 0,
+                pronoun: req.body.pronoun ? req.body.pronoun : 0,
+                tags: req.body.tags ? req.body.tags : [],
+                fields: [],
+                ownedNFT: req.body.ownedNFT
+                  ? req.body.ownedNFT
+                  : ["0x0000000000000000000000000000000000000000", 0],
+              };
+              if (req.body.firstname) {
+                updates.data.push(req.body.firstname);
+                updates.fields.push(0);
               }
+              if (req.body.middlename) {
+                updates.data.push(req.body.middlename);
+                updates.fields.push(1);
+              }
+              if (req.body.lastname) {
+                updates.data.push(req.body.lastname);
+                updates.fields.push(2);
+              }
+              if (req.body.username) {
+                updates.data.push(req.body.username);
+                updates.fields.push(3);
+              }
+              if (req.body.backgroundColor) {
+                updates.data.push(req.body.backgroundColor);
+                updates.fields.push(4);
+              }
+              if (req.body.discord) {
+                updates.data.push(req.body.discord);
+                updates.fields.push(5);
+              }
+              if (req.body.instagram) {
+                updates.data.push(req.body.instagram);
+                updates.fields.push(6);
+              }
+              if (req.body.twitter) {
+                updates.data.push(req.body.twitter);
+                updates.fields.push(7);
+              }
+              if (req.body.tiktok) {
+                updates.data.push(req.body.tiktok);
+                updates.fields.push(8);
+              }
+              if (req.body.uploadedPictureUrl) {
+                updates.data.push(req.body.uploadedPictureUrl);
+                updates.fields.push(9);
+              }
+              if (req.body.email) {
+                updates.data.push(req.body.email);
+                updates.fields.push(10);
+              }
+              if (req.body.bio) {
+                updates.data.push(req.body.bio);
+                updates.fields.push(11);
+              }
+              if (req.body.telephone) {
+                updates.data.push(req.body.telephone);
+                updates.fields.push(12);
+              }
+              if (req.body.govid) {
+                updates.data.push(req.body.govid);
+                updates.fields.push(13);
+              }
+              if (req.body.fingerscan) {
+                updates.data.push(req.body.fingerscan);
+                updates.fields.push(14);
+              }
+              if (req.body.tags) {
+                updates.tags = req.body.tags;
+                updates.fields.push(15);
+              }
+              if (req.body.ownedNFT) {
+                updates.ownedNFT = req.body.ownedNFT;
+                updates.fields.push(16);
+              }
+              if (req.body.dateOfBirth) {
+                updates.dateOfBirth = req.body.dateOfBirth;
+                updates.fields.push(17);
+              }
+              if (req.body.pronoun) {
+                updates.pronoun = req.body.pronoun;
+                updates.fields.push(18);
+              }
+
+              console.log("updates", updates);
+
+              await userContract
+                .connect(serverWallet)
+                .signup(
+                  sessionHash,
+                  addr,
+                  updates.data,
+                  updates.dateOfBirth,
+                  updates.pronoun,
+                  updates.tags,
+                  updates.fields,
+                  updates.ownedNFT
+                );
+              token.success = true;
+              res.json(token);
             } else {
               token.reason = "wrong signature";
               console.log("wrong signature");

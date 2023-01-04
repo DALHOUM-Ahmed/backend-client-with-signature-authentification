@@ -41,6 +41,25 @@
       {
         "indexed": false,
         "internalType": "string",
+        "name": "btcAddress",
+        "type": "string"
+      }
+    ],
+    "name": "SetBTCAddress",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "userId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
         "name": "backgroundColor",
         "type": "string"
       }
@@ -299,6 +318,25 @@
       }
     ],
     "name": "SetPictureUpload",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "userId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum User.PRONOUN",
+        "name": "pronoun",
+        "type": "uint8"
+      }
+    ],
+    "name": "SetPronoun",
     "type": "event"
   },
   {
@@ -580,6 +618,25 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "btcAddress",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "expiredSession",
         "type": "bytes32"
@@ -636,9 +693,40 @@
         "type": "bytes32"
       }
     ],
-    "name": "followOwner",
+    "name": "follow",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "userID",
+        "type": "uint256"
+      }
+    ],
+    "name": "getNFTOwnedBy",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "nftAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ownedID",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct User.userNFT",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -669,25 +757,6 @@
       }
     ],
     "name": "idByAddress",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "name": "idByEmail",
     "outputs": [
       {
         "internalType": "uint256",
@@ -750,565 +819,11 @@
       },
       {
         "internalType": "string",
-        "name": "_backgroundColor",
+        "name": "_btcAddress",
         "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
       }
     ],
-    "name": "setBackgroundColorOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "bio",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setBioOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_dateOfBirth",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setDateOfBirthOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_discord",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setDiscordOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "email",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setEmailOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "data",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setEmailVerifiedDataOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "fingerScan",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setFingerScanOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "firstName",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setFirstNameOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "govtID",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setGovtIDOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_instagram",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setInstagramOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "lastName",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setLastNameOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_middleName",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setMiddleNameOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "nftAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "ownedID",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct User.userNFT",
-        "name": "nft",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setPictureNFTOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "url",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setPictureUploadOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string[]",
-        "name": "tags",
-        "type": "string[]"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setTagsOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "telephone",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setTelephoneOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "data",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setTelephoneVerifiedDataOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_tiktok",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setTiktokOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_twitter",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setTwitterOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "username",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setUserNameOwner",
+    "name": "setBtcAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1386,7 +901,7 @@
         "type": "tuple"
       }
     ],
-    "name": "signupOwner",
+    "name": "signup",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1420,7 +935,72 @@
         "type": "bytes32"
       }
     ],
-    "name": "unFollowOwner",
+    "name": "unFollow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "userAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "string[]",
+        "name": "data",
+        "type": "string[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dateOfBirth",
+        "type": "uint256"
+      },
+      {
+        "internalType": "enum User.PRONOUN",
+        "name": "pronoun",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string[]",
+        "name": "tags",
+        "type": "string[]"
+      },
+      {
+        "internalType": "enum User.Field[]",
+        "name": "fields",
+        "type": "uint8[]"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "nftAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ownedID",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct User.userNFT",
+        "name": "ownedNFT",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "expiredSession",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "newSession",
+        "type": "bytes32"
+      }
+    ],
+    "name": "updateBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
