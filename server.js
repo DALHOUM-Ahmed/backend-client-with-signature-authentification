@@ -736,6 +736,13 @@ app.post("/update-user", async (req, res) => {
           updates.fields.push(2);
         }
         if (req.body.username) {
+          var id = await userContract.idByUserName(req.body.username);
+          if (id.gt(0)) {
+            console.log("token", token);
+            token.reason = "existing username";
+            res.json(token);
+            return;
+          }
           updates.data.push(req.body.username);
           updates.fields.push(3);
         }
