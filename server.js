@@ -740,6 +740,7 @@ app.post("/update-user", async (req, res) => {
           if (id.gt(0)) {
             console.log("token", token);
             token.reason = "existing username";
+            delete token.generatedBytes;
             res.json(token);
             return;
           }
