@@ -21,7 +21,7 @@ const sessionExpirationDelayInSeconds = 2628288;
 const signatureLifeTimeInSeconds = 3600; //one hour
 
 const userContractAddress = "0x14C315c29371c4C8206Af7cdC6f9CeF891e39A48";
-const groupContractAddress = "0x5FFd8a50A87B5B1a6429819C1eDFcC6F23D2E958";
+const groupContractAddress = "0xc2a357164E83F27FA83062dB136Cc039b4Ef185A";
 const postContractAddress = "0x26E60aA320e93F6CE092D6c242697d8876129BAb";
 const ethThresholdToPostInEthGroup = 0.1;
 const bnbThresholdToPostInBscGroup = 0.1;
@@ -549,62 +549,20 @@ app.post("/group-update-name", async (req, res) => {
 
 app.post("/group-update", async (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
-  console.log("execution test");
 
-  try {
-    var token = { success: false, signinTime: req.body.signinTime };
-    if (
-      getTimestampInSeconds() - req.body.signinTime >=
-      sessionExpirationDelayInSeconds
-    ) {
-      token.reason = "session expired";
-      res.json(token);
-    } else {
-      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
-      console.log("isCorrect", isCorrect);
-      if (isCorrect) {
-        ////Operation code
-        const sessionHash =
-          "0x" +
-          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
-            "hex"
-          );
-        console.log("old session hash", sessionHash);
-        token.generatedBytes = getRandom32Bytes();
-        const nextSessionHash =
-          "0x" +
-          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
-        console.log("token", token);
-        // console.log("new session hash", token.OrigingeneratedBytes);
-        //////////////////////////////////signup
-
-        await groupContract
-          .connect(serverWallet)
-          .updateGroupName(
-            req.body.userAddress,
-            req.body.groupId,
-            req.body.name,
-            sessionHash,
-            nextSessionHash
-          );
-        //////
-        token.success = true;
-      } else {
-        token.reason = "non verified or expired token";
-      }
-      res.json(token);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/group-create", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
   var token = { success: false, signinTime: req.body.signinTime };
-  const groupId = await groupContract.groupIdByName(req.body.name);
-  if (groupId.eq(0)) {
-    token.reason = "Group with same name already exists";
+  if (req.body.name) {
+    const exists = await groupContract.checkGroupNameExist(req.body.name);
+    if (exists) {
+      token.reason = "Group with same name already exists";
+      res.json(token);
+      return;
+    }
+  }
+  const exists = await groupContract.checkGroupExist(req.body.groupId);
+  if (!exists) {
+    console.log("eq.body.groupId", req.body.groupId);
+    token.reason = "Group ID doesn't exist";
     res.json(token);
     return;
   }
@@ -633,7 +591,82 @@ app.post("/group-create", async (req, res) => {
         console.log("token", token);
         // console.log("new session hash", token.OrigingeneratedBytes);
         //////////////////////////////////signup
+        var updates = {
+          userAddress: req.body.userAddress,
+          groupId: req.body.groupId,
+          data: [],
+          fields: [],
+        };
+        if (req.body.name) {
+          updates.data.push(req.body.name);
+          updates.fields.push(0);
+        }
+        if (req.body.about) {
+          updates.data.push(req.body.about);
+          updates.fields.push(1);
+        }
+        if ("privacy" in req.body) {
+          updates.fields.push(2);
+        }
 
+        await groupContract
+          .connect(serverWallet)
+          .updateGroup(
+            updates.userAddress,
+            updates.groupId,
+            updates.data,
+            updates.fields,
+            "privacy" in req.body ? req.body.privacy : false,
+            sessionHash,
+            nextSessionHash
+          );
+        //////
+        token.success = true;
+      } else {
+        token.reason = "non verified or expired token";
+      }
+      res.json(token);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/group-create", async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  var token = { success: false, signinTime: req.body.signinTime };
+  const exists = await groupContract.checkGroupNameExist(req.body.name);
+  console.log("exists", exists);
+  if (exists) {
+    token.reason = "Group with same name already exists";
+    res.json(token);
+    return;
+  }
+  try {
+    if (
+      getTimestampInSeconds() - req.body.signinTime >=
+      sessionExpirationDelayInSeconds
+    ) {
+      token.reason = "session expired";
+      res.json(token);
+    } else {
+      const isCorrect = await verifySigninAfterExpirationCheck(req.body);
+      console.log("isCorrect", isCorrect);
+      if (isCorrect) {
+        ////Operation code
+        const sessionHash =
+          "0x" +
+          keccak256(req.body.generatedBytes, req.body.signinTime).toString(
+            "hex"
+          );
+        console.log("old session hash", sessionHash);
+        token.generatedBytes = getRandom32Bytes();
+        const nextSessionHash =
+          "0x" +
+          keccak256(token.generatedBytes, req.body.signinTime).toString("hex");
+
+        // console.log("new session hash", token.OrigingeneratedBytes);
+        //////////////////////////////////signup
         await groupContract
           .connect(serverWallet)
           .createGroup(
@@ -646,6 +679,7 @@ app.post("/group-create", async (req, res) => {
           );
         //////
         token.success = true;
+        console.log("token", token);
       } else {
         token.reason = "non verified or expired token";
       }
