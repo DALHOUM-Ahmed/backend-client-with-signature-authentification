@@ -1,0 +1,13 @@
+{
+  "goerli": {
+    "users": {
+      "address": "0xF9B8860eB47986ad1aa4d3B84FF387DA1EBb96e0"
+    },
+    "posts": {
+      "address": "0x4c392cd080bd7b2C20690C7b5604e5B345BE3C3f"
+    },
+    "groups": {
+      "address": "0x795eF100cd180873EAB7724a9829f429d3871833"
+    }
+  }
+}

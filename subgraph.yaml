@@ -1,0 +1,241 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+features:
+  - fullTextSearch
+  - nonFatalErrors
+dataSources:
+  - kind: ethereum
+    name: users
+    network: goerli
+    source:
+      address: "0xF9B8860eB47986ad1aa4d3B84FF387DA1EBb96e0"
+      abi: users
+      startBlock: 8521080
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AddTag
+        - Follow
+        - SetBio
+        - SetDateOfBirth
+        - SetDiscord
+        - SetEmail
+        - SetEmailVerifiedData
+        - SetFingerScan
+        - SetFirstName
+        - SetGovID
+        - SetInstagram
+        - SetLastName
+        - SetMiddleName
+        - SetPictureNFT
+        - SetPictureUpload
+        - SetTelephone
+        - SetTelephoneVerifiedData
+        - SetTiktok
+        - SetTwitter
+        - SetUsername
+        - SignupBasic
+        - SignupProfileInfo
+        - UnFollow
+        - SetPronoun
+      abis:
+        - name: users
+          file: ./abis/users.json
+      eventHandlers:
+        - event: Follow(uint256,uint256)
+          handler: handleFollow
+        - event: SetBio(uint256,string)
+          handler: handleSetBio
+        - event: SetDateOfBirth(uint256,uint256)
+          handler: handleSetDateOfBirth
+        - event: SetDiscord(uint256,string)
+          handler: handleSetDiscord
+        - event: SetEmail(uint256,string)
+          handler: handleSetEmail
+        - event: SetEmailVerifiedData(uint256,string)
+          handler: handleSetEmailVerifiedData
+        - event: SetFingerScan(uint256,string)
+          handler: handleSetFingerScan
+        - event: SetFirstName(uint256,string)
+          handler: handleSetFirstName
+        - event: SetGovID(uint256,string)
+          handler: handleSetGovID
+        - event: SetInstagram(uint256,string)
+          handler: handleSetInstagram
+        - event: SetLastName(uint256,string)
+          handler: handleSetLastName
+        - event: SetMiddleName(uint256,string)
+          handler: handleSetMiddleName
+        - event: SetPictureNFT(uint256,address,uint256)
+          handler: handleSetPictureNFT
+        - event: SetPictureUpload(uint256,string)
+          handler: handleSetPictureUpload
+        - event: SetTelephone(uint256,string)
+          handler: handleSetTelephone
+        - event: SetTelephoneVerifiedData(uint256,string)
+          handler: handleSetTelephoneVerifiedData
+        - event: SetTiktok(uint256,string)
+          handler: handleSetTiktok
+        - event: SetTwitter(uint256,string)
+          handler: handleSetTwitter
+        - event: SetUsername(uint256,string)
+          handler: handleSetUsername
+        - event: SignupBasic(uint256,address,string[4],string[4],string[2])
+          handler: handleSignupBasic
+        - event: SignupProfileInfo(uint256,uint8,uint256,string[2],string,address,uint256,string[2])
+          handler: handleSignupProfileInfo
+        - event: UnFollow(uint256,uint256)
+          handler: handleUnFollow
+        - event: SignupTags(uint256,string[])
+          handler: handleSignupTags
+        - event: SetBackgroundColor(uint256,string)
+          handler: handleSetBackgroundColor
+        - event: SetTags(uint256,string[])
+          handler: handleSetTags
+        - event: SetGovID(uint256,string)
+          handler: handleSetGovtID
+        - event: SetPronoun(uint256,uint8)
+          handler: handleSetPronoun
+      file: ./src/users.ts
+  - kind: ethereum
+    name: posts
+    network: goerli
+    source:
+      address: "0x4c392cd080bd7b2C20690C7b5604e5B345BE3C3f"
+      abi: posts
+      startBlock: 8521080
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CreatePost
+        - UpdateTitle
+        - UpdateBody
+        - UpdateTags
+        - AddComment
+        - AddCommentLike
+        - AddPostLike
+        - AddReply
+        - AddReplyLike
+        - DeleteComment
+        - DeleteReply
+        - EditComment
+        - EditReply
+        - RemoveCommentLike
+        - RemovePostLike
+        - RemoveReplyLike
+        - UpdateTaggedPeople
+        - UpdateTaggedGroups
+        - UpdateType
+        - MintedNFT
+        - HidePost
+      abis:
+        - name: posts
+          file: ./abis/posts.json
+      eventHandlers:
+        - event: CreatePost(uint256,string,string,string,string[],(uint256[],uint256[]),uint256,uint256,uint8,uint256)
+          handler: handleCreatePost
+        - event: UpdateTitle(uint256,uint256,string)
+          handler: handleUpdateTitle
+        - event: UpdateBody(uint256,uint256,string)
+          handler: handleUpdateBody
+        - event: UpdateTags(uint256,uint256,string[])
+          handler: handleUpdateTags
+        - event: AddComment(uint256,uint256,uint256,string,(uint256[],uint256[]))
+          handler: handleAddComment
+        - event: AddCommentLike(uint256,uint256)
+          handler: handleAddCommentLike
+        - event: AddPostLike(uint256,uint256)
+          handler: handleAddPostLike
+        - event: AddReply(uint256,uint256,uint256,string,(uint256[],uint256[]))
+          handler: handleAddReply
+        - event: AddReplyLike(uint256,uint256)
+          handler: handleAddReplyLike
+        - event: DeleteComment(uint256,uint256)
+          handler: handleDeleteComment
+        - event: DeleteReply(uint256,uint256)
+          handler: handleDeleteReply
+        - event: EditComment(uint256,uint256,string,(uint256[],uint256[]))
+          handler: handleEditComment
+        - event: EditReply(uint256,uint256,string,(uint256[],uint256[]))
+          handler: handleEditReply
+        - event: RemoveCommentLike(uint256,uint256)
+          handler: handleRemoveCommentLike
+        - event: RemovePostLike(uint256,uint256)
+          handler: handleRemovePostLike
+        - event: RemoveReplyLike(uint256,uint256)
+          handler: handleRemoveReplyLike
+        - event: UpdateTaggedPeople(uint256,uint256,uint256[])
+          handler: handleUpdateTaggedPeople
+        - event: UpdateTaggedGroups(uint256,uint256,uint256[])
+          handler: handleUpdateTaggedGroups
+        - event: UpdateType(uint256,uint256,uint8)
+          handler: handleUpdateType
+        - event: UpdateCID(uint256,uint256,string)
+          handler: handleUpdateCID
+        - event: CreatePoll(uint256,string[],bool)
+          handler: handleCreatePoll
+        - event: AddVote(uint256,uint256,uint256,uint256)
+          handler: handleAddVote
+        - event: RemoveVote(uint256,uint256,uint256,uint256)
+          handler: handleRemoveVote
+        - event: MintedNFT(uint256,address,uint256)
+          handler: handleMintedNFT
+        - event: EditBackgroundColor(uint256,string)
+          handler: handleEditBackgroundColor
+        - event: EditCaptionType(uint256,uint8)
+          handler: handleEditCaptionType
+        - event: HidePost(uint256,uint256,bool)
+          handler: handleHidePost
+      file: ./src/posts.ts
+  - kind: ethereum
+    name: groups
+    network: goerli
+    source:
+      address: "0x795eF100cd180873EAB7724a9829f429d3871833"
+      abi: groups
+      startBlock: 8521080
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CreateGroup
+        - UpdateGroupName
+        - UpdateGroupAbout
+        - DeleteGroup
+        - AddGroupMember
+        - RemoveMember
+        - AddPendingMember
+        - RemovePendingMember
+        - UpdateGroupPrivacy
+        - Follow
+        - UnFollow
+        - CreatePostGroup
+      abis:
+        - name: groups
+          file: ./abis/groups.json
+      eventHandlers:
+        - event: CreateGroup(uint256,uint256,string,string,bool)
+          handler: handleCreateGroup
+        - event: UpdateGroupName(uint256,string)
+          handler: handleUpdateGroupName
+        - event: UpdateGroupAbout(uint256,string)
+          handler: handleUpdateGroupAbout
+        - event: DeleteGroup(uint256)
+          handler: handleDeleteGroup
+        - event: UpdateBanStatus(uint256,uint256,bool)
+          handler: handleUpdateBanStatus
+        - event: UpdateGroupPrivacy(uint256,bool)
+          handler: handleUpdateGroupPrivacy
+        - event: Follow(uint256,uint256)
+          handler: handleFollow
+        - event: UnFollow(uint256,uint256)
+          handler: handleUnFollow
+        - event: CreatePostGroup(uint256,uint256,uint256,string,string,bool)
+          handler: handleCreatePostGroup
+      file: ./src/groups.ts

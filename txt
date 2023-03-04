@@ -1,0 +1,5 @@
+ hash = 0xf567656cffc1b49f1637c1f55dae58ce3f552f52f50fd92d451a272bd30aaadb), provider: cmpTestnet-rpc-0, component: BlockIngestor
+Feb 27 07:58:31.339 INFO Syncing 221 blocks from Ethereum, code: BlockIngestionLagging, blocks_needed: 221, blocks_behind: 221, latest_block_head: 12869324, current_block_head: 12869103, provider: cmpTestnet-rpc-0, component: BlockIngestor
+Feb 27 07:58:31.889 INFO Trying again after block polling failed: Receipt for tx 0xb05f105bc9148387ceb640ccb820a8d0b3b9e9703e8916cd6ddb9fc50eb6eb96 unavailable, block was likely uncled (block hash = 0xf567656cffc1b49f1637c1f55dae58ce3f552f52f50fd92d451a272bd30aaadb), provider: cmpTestnet-rpc-0, component: BlockIngestor
+Feb 27 07:58:32.911 INFO Syncing 221 blocks from Ethereum, code: BlockIngestionLagging, blocks_needed: 221, blocks_behind: 221, latest_block_head: 12869324, current_block_head: 12869103, provider: cmpTestnet-rpc-0, component: BlockIngestor
+Feb 27 07:58:33.130 INFO Trying again after block polling failed: Receipt for tx 0xb05f105bc9148387ceb640ccb820a8d0b3b9e9703e8916cd

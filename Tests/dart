@@ -1,0 +1,21 @@
+convert the following javascript code to flutter dart: const { ec } = require("elliptic");
+const { ethers } = require("ethers");
+
+// Replace the seed value with your own
+const seed = "my signed message as string";
+
+// Generate a SHA256 hash of the seed value
+const hash = ethers.utils.sha256(Buffer.from(seed));
+
+// Create an elliptic curve object using the secp256k1 curve
+const curve = new ec("secp256k1");
+
+// Generate a key pair using the hashed seed value as the private key
+const keyPair = curve.genKeyPair({ entropy: hash });
+
+// Get the private and public keys as hexadecimal strings
+const privateKey = keyPair.getPrivate("hex");
+const publicKey = keyPair.getPublic("hex");
+
+console.log("Private key:", privateKey);
+console.log("Public key:", publicKey);

@@ -1,0 +1,166 @@
+type Post @entity {
+  id: ID!
+  integerID: BigInt!
+  title: String! # string
+  body: String! # string
+  cid: String! # string
+  tags: [String!]
+  taggedPeople: [User!]
+  taggedGroups: [Group!]
+  createdAt: BigInt! # uint256
+  groupID: BigInt! # uint256
+  editedAt: BigInt
+  author: User!
+  authorID: String! #used on nft creation
+  hiddenByAdmin: Boolean!
+  hiddenByAuthor: Boolean!
+  likes: Int
+  likers: [User!]
+  numberOfComments: Int
+  type: String
+  captionType: String
+  poll: Poll
+  nftID: Int
+  comments: [Comment!]
+  isNFT: Boolean
+  backgroundColor: String
+  firstCreatedCommentID: BigInt
+  lastCreatedCommentID: BigInt
+  group: Group!
+}
+#add isGroup bool to avoid fail on unknown
+
+# every poll have same id as its corresponding post
+type Poll @entity {
+  id: ID!
+  integerID: BigInt!
+  options: [String!]
+  votes: [Vote!]
+  firstCreatedVoteID: BigInt
+  lastCreatedVoteID: BigInt
+  singleOption: Boolean
+}
+
+#with an id that is incrementing inside the file (no need for a save file cause fail => re-run)
+type Vote @entity {
+  id: ID!
+  integerID: BigInt!
+  user: User!
+  removed: Boolean
+  chosenOption: BigInt! #indexes starting by 0; different then contract but more ui understandable
+}
+
+type User @entity {
+  id: ID! # this field will contain a representation of the wallet address, cause the user will login with his wallet
+  userId: BigInt!
+  firstCreatedPostID: BigInt
+  lastCreatedPostID: BigInt
+  followedGroups: [Group!]
+  followedUsers: [User!]
+  followers: [User!]
+  followedGroupsCount: Int
+  followedUsersCount: Int
+  followingUsersCount: Int
+  userAddress: String # address
+  firstName: String # string
+  middleName: String # string
+  lastName: String # string
+  userName: String # string
+  pronoun: String
+  backgroundColor: String
+  dateOfBirth: BigInt # string
+  email: String # string
+  bio: String # string
+  profilePicCid: String # string
+  nftAddress: String # address
+  ownedID: BigInt # uint256
+  telephone: String # string
+  govtID: String # string
+  fingerScan: String # string
+  blockNumber: BigInt
+  blockTimestamp: BigInt
+  transactionHash: Bytes
+  telephoneVerifiedData: String
+  emailVerifiedData: String
+  discord: String
+  instagram: String
+  twitter: String
+  tiktok: String
+  tags: [String!]
+  posts: [Post!]
+  bannedGroupsCount: Int
+  postEntity: String
+  deleted: Boolean
+  profilePostsNFTaddress: String
+  numberOfMintedPosts: Int
+  firstCreatedGroupID: BigInt
+  lastCreatedGroupID: BigInt
+}
+
+type Group @entity {
+  id: ID! # this field will contain a representation of the wallet address, cause the user will login with his wallet
+  integerID: BigInt!
+  followers: [User!]
+  numberOfFollowers: Int
+  name: String!
+  author: User!
+  about: String!
+  admins: [User!]
+  posts: [Post!]
+  bannedUsersCount: Int
+  isPrivate: Boolean
+  deleted: Boolean
+  post: Post!
+}
+
+type Comment @entity {
+  id: ID! # this field will contain a representation of the wallet address, cause the user will login with his wallet
+  integerID: BigInt!
+  author: User!
+  body: String!
+  post: Post!
+  likes: Int
+  likers: [User!]
+  createdAt: BigInt
+  editedAt: BigInt
+  taggedPeople: [User!]
+  taggedGroups: [Group!]
+  replies: [Reply!]
+  numberOfReplies: Int
+  firstCreatedReplyID: BigInt
+  lastCreatedReplyID: BigInt
+}
+
+type Reply @entity {
+  id: ID! # this field will contain a representation of the wallet address, cause the user will login with his wallet
+  integerID: BigInt!
+  author: User!
+  body: String!
+  comment: Comment!
+  likes: Int
+  likers: [User!]
+  createdAt: BigInt
+  editedAt: BigInt
+  taggedPeople: [User!]
+  taggedGroups: [Group!]
+}
+
+type _Schema_
+  @fulltext(
+    name: "getUserByEmail"
+    language: simple
+    algorithm: rank
+    include: [{ entity: "User", fields: [{ name: "email" }] }]
+  )
+  @fulltext(
+    name: "getUserByAddress"
+    language: simple
+    algorithm: proximityRank
+    include: [{ entity: "User", fields: [{ name: "userAddress" }] }]
+  )
+  @fulltext(
+    name: "getUserById"
+    language: simple
+    algorithm: rank
+    include: [{ entity: "User", fields: [{ name: "id" }] }]
+  )

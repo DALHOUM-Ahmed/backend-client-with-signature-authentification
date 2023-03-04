@@ -5,6 +5,21 @@
         "internalType": "address",
         "name": "_administration",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_group",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_postFac",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -1291,31 +1306,12 @@
   },
   {
     "inputs": [],
-    "name": "globalTransferActivated",
+    "name": "group",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "contract Group",
         "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "groupIDByPostID",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -1461,14 +1457,9 @@
         "type": "tuple"
       },
       {
-        "internalType": "string[]",
-        "name": "_urisAndDescription",
-        "type": "string[]"
-      },
-      {
-        "internalType": "bool[]",
-        "name": "groupSpecs",
-        "type": "bool[]"
+        "internalType": "string",
+        "name": "_uri",
+        "type": "string"
       },
       {
         "internalType": "bytes32",
@@ -1484,19 +1475,6 @@
     "name": "makePost",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1814,19 +1792,6 @@
   {
     "inputs": [
       {
-        "internalType": "bool",
-        "name": "value",
-        "type": "bool"
-      }
-    ],
-    "name": "setGlobalTransferActivated",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "_user",
         "type": "address"
@@ -1959,6 +1924,19 @@
     "name": "updatePost",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "user",
+    "outputs": [
+      {
+        "internalType": "contract User",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

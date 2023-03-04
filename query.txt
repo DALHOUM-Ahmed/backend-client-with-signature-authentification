@@ -1,0 +1,46 @@
+query { getUserByEmail(text: "one@one.com") { id userName } }
+
+query { getUserByAddress(text: "0xf9013432B10E1F446bb19D5b7C15baB43E9C3867") { id userName userAddress } }
+
+query { getUserById(text: "2") { id userName userAddress } }
+
+administration: 0x50C1Dc3bE23fBF2ce76ED8Ad1902878cF6d95f24
+post factory: 0xB5BC6b3D04Aae7DBb38326552a77eb3FA0E52Ac6
+
+fieldtype @derivedFrom(field: "author")
+
+{
+  users(first: 10, where: {userId_gt: "2", userName_contains: "ahm"}, orderBy: id, orderDirection: desc) {
+    userName
+    id
+  }
+}
+
+{
+  users(first: 10, where: {userId_gt: "2", userId_lt: 4, userName_contains: "ahm"}, orderBy: id, orderDirection: desc) {
+    userName
+    id
+  }
+}
+
+{
+  groups (orderBy: id, orderDirection: desc) {
+    admins (where: {userName_contains_nocase: "ah"}){
+      userName
+    }
+    id
+    name
+  }
+}
+
+//select * from gr on u left join tags on t where t.Name='Blockchain'
+
+// we can get element by id by removing the plural "s" from its name groups(first: 5) -> group(id: 2)
+
+
+//find 10 first comments of post
+{
+  comments(first: 10, where: {post.id_eq: "1"}, orderBy: id, orderDirection: desc) {
+    id
+  }
+}

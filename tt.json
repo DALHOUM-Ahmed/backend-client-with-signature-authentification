@@ -1,0 +1,3 @@
+query { getUserByAddress(text: ${address.toLowerCase()}) 
+    { id userName userAddress } 
+    }

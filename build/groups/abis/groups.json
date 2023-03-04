@@ -44,12 +44,6 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      },
-      {
-        "indexed": false,
         "internalType": "bool",
         "name": "isPrivateGroup",
         "type": "bool"
@@ -96,12 +90,6 @@
         "internalType": "bool",
         "name": "isPrivateGroup",
         "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "correspondingNftAddress",
-        "type": "address"
       }
     ],
     "name": "CreatePostGroup",
@@ -137,31 +125,6 @@
       }
     ],
     "name": "Follow",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "addedUsers",
-        "type": "uint256[]"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_groupID",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "mintedIDs",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "MintBatch",
     "type": "event"
   },
   {
@@ -266,25 +229,6 @@
     "type": "event"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "NftAddressByID",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "administration",
     "outputs": [
@@ -350,11 +294,6 @@
       {
         "internalType": "string",
         "name": "_about",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_description",
         "type": "string"
       },
       {
@@ -461,11 +400,6 @@
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
-      },
-      {
         "internalType": "address",
         "name": "author",
         "type": "address"
@@ -488,25 +422,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "groupURI",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -628,39 +543,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "addedUsers",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_groupID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "expiredSession",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "newSession",
-        "type": "bytes32"
-      }
-    ],
-    "name": "mintBatch",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "name",
     "outputs": [
@@ -699,16 +581,6 @@
         "internalType": "bool",
         "name": "_private",
         "type": "bool"
-      },
-      {
-        "internalType": "string",
-        "name": "uri",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
       }
     ],
     "name": "postContractCreateGroup",
@@ -717,11 +589,6 @@
         "internalType": "uint256",
         "name": "_groupID",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "groupAddress",
-        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -798,19 +665,6 @@
       }
     ],
     "name": "setBanUser",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
-    ],
-    "name": "setUser",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
